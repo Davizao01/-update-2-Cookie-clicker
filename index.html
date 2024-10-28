@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cookie Clicker</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0e68c; /* Cor de fundo */
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        #cookie {
+            width: 150px;
+            height: 150px;
+            background-color: #8B4513; /* Cor marrom do cookie */
+            background-image: radial-gradient(circle, #8B4513 30%, #3B2F25 70%); /* Gotas de chocolate */
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            margin-right: 50px;
+        }
+        #upgrades {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .upgrade {
+            margin: 10px;
+            padding: 10px;
+            background-color: #fff;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        .upgrade:hover {
+            background-color: #f0a500; /* Cor ao passar o mouse */
+        }
+        #level {
+            margin-top: 20px;
+            font-size: 24px;
+        }
+        #cookies {
+            font-size: 24px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<div id="cookie" onclick="clickCookie()"></div>
+<div id="upgrades">
+    <h2>Upgrades</h2>
+    <div id="upgrade1" class="upgrade" onclick="buyUpgrade(1)">Upgrade 1: 10 cookies</div>
+    <div id="upgrade2" class="upgrade" onclick="buyUpgrade(2)" style="display:none;">Upgrade 2: 20 cookies</div>
+    <div id="upgrade3" class="upgrade" onclick="buyUpgrade(3)" style="display:none;">Upgrade 3: 40 cookies</div>
+    <div id="upgrade4" class="upgrade" onclick="buyUpgrade(4)" style="display:none;">Upgrade 4: 80 cookies</div>
+    <div id="upgrade5" class="upgrade" onclick="buyUpgrade(5)" style="display:none;">Upgrade 5: 160 cookies</div>
+    <div id="upgrade6" class="upgrade" onclick="buyUpgrade(6)" style="display:none;">Vovós: 320 cookies</div>
+    <div id="upgrade7" class="upgrade" onclick="buyUpgrade(7)" style="display:none;">Agricultores: 640 cookies</div>
+    <div id="upgrade8" class="upgrade" onclick="buyUpgrade(8)" style="display:none;">Fábrica: 1280 cookies</div>
+</div>
+<div id="level">Nível: 1</div>
+<div id="cookies">Cookies: 0</div>
+
+<script>
+    let cookies = 0;
+    let clickPower = 1;
+    let upgradeLevel = 0;
+    let nextUpgradePrice = 10;
+
+    function clickCookie() {
+        cookies += clickPower;
+        updateDisplay();
+    }
+
+    function buyUpgrade(upgradeNum) {
+        if (cookies >= nextUpgradePrice) {
+            cookies -= nextUpgradePrice;
+            upgradeLevel++;
+
+            // Aumentar o poder de clique
+            clickPower *= 2;
+
+            // Atualizar o preço do próximo upgrade
+            if (upgradeLevel % 10 === 0) {
+                nextUpgradePrice *= 2; // Dobra o preço a cada 10 upgrades
+            } else {
+                nextUpgradePrice += 10; // Aumenta o preço padrão
+            }
+
+            // Esconder o upgrade anterior
+            const currentUpgrade = document.getElementById(`upgrade${upgradeNum}`);
+            currentUpgrade.style.display = 'none';
+
+            // Mostrar a próxima atualização
+            const nextUpgrade = document.getElementById(`upgrade${upgradeNum + 1}`);
+            if (nextUpgrade) {
+                nextUpgrade.style.display = 'block'; // Torna visível o próximo upgrade
+            }
+
+            // Atualizar o display
+            updateDisplay();
+        } else {
+            alert("Você não tem cookies suficientes!");
+        }
+    }
+
+    function updateDisplay() {
+        document.getElementById('cookies').innerText = `Cookies: ${cookies}`;
+        document.getElementById('level').innerText = `Nível: ${Math.floor(upgradeLevel / 5) + 1}`; // Nível baseado em upgrades
+    }
+</script>
+
+</body>
+</html>
